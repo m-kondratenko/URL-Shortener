@@ -10,7 +10,7 @@
     return $url;
   }
 
-  function verifyUrl($url) {
+  function verifyLongUrl($url) {
     $curl=curl_init();
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -20,30 +20,52 @@
     return (!empty($response)&&$response!=404);
   }
 
+  function generateShortURL($base){
+    $shorturl='';
+    $count=rand(0, MAX_LENGTH);
+    $length=strlen($base);
+    for ($i=0; $i<=$count; $i++) {
+      $shorturl.=$base[rand(0, $length)];
+    }
+    return $shorturl;
+  }
+
+  function verifyShortURL($url, $connect) {
+    $id=$connect->query("SELECT `id` FROM  `urls` WHERE `shorturl`='$url' LIMIT 0 , 1");
+    return $id;
+  }
+
+  require_once 'config.php';
+  require_once 'DB.php';
   //check for valid URL
-  if (!verifyUrl($_POST["longurl"])) {
+  if (!verifyLongUrl($_POST["longurl"])) {
     die("Your URL is not valid");
+  }
+  //check for DB connection
+  $connect=connectDB();
+  if ($connect->connect_errno) {
+    die("db_error");
   }
   //check for injections
   $longurl=implementFilters($_POST["longurl"]);
   //check for desiredurl
   if($_POST["desiredurl"]) {
     $shorturl="http://".$_SERVER["HTTP_HOST"]."/".implementFilters($_POST["desiredurl"]);
+    if (verifyShortURL($shorturl, $connect)->fetch_assoc()) {
+      die("Desired URL is already in DB");
+    }
   }
   else {
-    $shorturl="http://".$_SERVER["HTTP_HOST"]."/empty";
+    //generate short URL and verify if it is already in DB
+    do {
+      $generatedurl=generateShortURL(CHARS);
+    } while (verifyShortURL($generatedurl, $connect)->fetch_assoc());
+    $shorturl="http://".$_SERVER["HTTP_HOST"]."/".$generatedurl;
   }
   //insert url pair into the DB
-  require_once 'DB.php';
-  $connect=connectDB();
-  if ($connect->connect_errno) {
-    echo "db_error";
-  }
-  else {
-    $lock=$connect->query("LOCK TABLES `urls` WRITE");
-    $success=$connect->query("INSERT INTO  `urls` (`id`, `longurl`, `shorturl`, `date`, `usage`) VALUES (NULL, '$longurl', '$shorturl', CURRENT_TIMESTAMP, '0')");
-    $unlock=$connect->query("UNLOCK TABLES");
-    $connect->close();
-    echo $shorturl;
-  }
+  $lock=$connect->query("LOCK TABLES `urls` WRITE");
+  $success=$connect->query("INSERT INTO  `urls` (`id`, `longurl`, `shorturl`, `date`, `usage`) VALUES (NULL, '$longurl', '$shorturl', CURRENT_TIMESTAMP, '0')");
+  $unlock=$connect->query("UNLOCK TABLES");
+  $connect->close();
+  echo $shorturl;
 ?>
