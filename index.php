@@ -8,7 +8,10 @@
     <script src="js/main.js"></script>
   </head>
   <body>
-    <h1>URL Shortener</h1>
+
+    <h1>URL Shortener <?php
+      require_once '/php/main.php';
+     ?></h1>
     <form method="post" id="shortener">
       <div>Insert your URL:</div>
       <input id="longurl" type="text">
