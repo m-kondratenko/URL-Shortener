@@ -1,42 +1,6 @@
 <?php
-  function implementFilters($url) {
-    if(get_magic_quotes_gpc()==1)  {
-      $url=stripslashes(trim($url));
-      }
-    else {
-      $url=trim($url);
-      }
-    $url=mysql_real_escape_string($url);
-    return $url;
-  }
-
-  function verifyLongUrl($url) {
-    $curl=curl_init();
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_exec($curl);
-    $response=curl_getinfo($curl, CURLINFO_HTTP_CODE);
-    curl_close($curl);
-    return (!empty($response)&&$response!=404);
-  }
-
-  function generateShortURL($base){
-    $shorturl='';
-    $count=rand(0, MAX_LENGTH);
-    $length=strlen($base);
-    for ($i=0; $i<=$count; $i++) {
-      $shorturl.=$base[rand(0, $length)];
-    }
-    return $shorturl;
-  }
-
-  function verifyShortURL($url, $connect) {
-    $id=$connect->query("SELECT `id` FROM  `urls` WHERE `shorturl`='$url' LIMIT 0 , 1");
-    return $id;
-  }
-
   require_once 'config.php';
-  require_once 'DB.php';
+  require_once 'functions.php';
   //check for valid URL
   if (!verifyLongUrl($_POST["longurl"])) {
     die("Your URL is not valid");
