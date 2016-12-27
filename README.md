@@ -41,3 +41,5 @@ Table "urls" consists of these fields: id, longurl, shorturl, date, usage.
 
 In configuration.php you may change DB parameters, allowed chars for short URL generator, maximum length of short URL.
 To turn logging off you need to change this string "php_value log_errors On" in .htaccess to this one "php_value log_errors Off".
+
+To use API in your code you should try $shorturl=file_get_contents('http://DOMAIN/php/getshorturl.php?longurl='.urlencode('URL')); where "DOMAIN" is a domain of this URL shortener and "URL" is your URL to shorten. 
