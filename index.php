@@ -16,11 +16,12 @@
       <div>Insert your URL:</div>
       <input id="longurl" type="text">
       <div>Insert desired short URL:</div>
-      <input id="desiredurl" type="text"><br>
+      <input id="desiredurl" maxlength="<?php echo MAX_LENGTH ?>" type="text"><br>
       <div>Short URL:</div>
       <input id="shorturl" type="text" disabled><br>
       <button id="shorten" type="button" onclick="GetShortURL()">Get shortened URL</button><br>
-      <div>* First you should insert your URL and then push the button to get the URL shortened. You may also insert preffered short URL.</div>
+      <div>* First you should insert your URL and then push the button to get the URL shortened. You may also insert preffered short URL.
+      Allowed chars: <?php echo CHARS ?>. Allowed length: <?php echo MAX_LENGTH ?>.</div>
     </form>
   </body>
 </html>

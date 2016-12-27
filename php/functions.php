@@ -21,11 +21,6 @@
     return $id;
   }
 
-  function getLongURL($id, $connect) {
-    $url=$connect->query("SELECT `longurl` FROM  `urls` WHERE `id`='$id' LIMIT 0 , 1");
-    return $url;
-  }
-
   function verifyLongUrl($url) {
     $curl=curl_init();
     curl_setopt($curl, CURLOPT_URL, $url);
@@ -34,6 +29,15 @@
     $response=curl_getinfo($curl, CURLINFO_HTTP_CODE);
     curl_close($curl);
     return (!empty($response)&&$response!=404);
+  }
+
+  function getLongURL($id, $connect) {
+    $url=$connect->query("SELECT `longurl` FROM  `urls` WHERE `id`='$id' LIMIT 0 , 1");
+    return $url;
+  }
+
+  function incrementUsage($id, $connect) {
+    $result=$connect->query("UPDATE `urls` SET `usage`=`usage`+1 WHERE `id`='$id'");
   }
 
   function generateShortURL($base){
