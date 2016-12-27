@@ -5,7 +5,7 @@
   define("DB_PASSWORD", "");
   define("DB_NAME", "test_umbrella");
   //maximum length of short URL
-  define("MAX_LENGTH", 5);
+  define("MAX_LENGTH", 6);
   //allowed chars for generated short URL
   define("CHARS", "0123456789abcdefghijklmnopqrstuvwxyz");
   //allowed chars for desired short URL {1,6}

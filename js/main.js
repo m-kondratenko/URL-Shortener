@@ -5,12 +5,7 @@ function GetShortURL() {
     cache:false,
     data: {longurl:$('#longurl').val(), desiredurl:$('#desiredurl').val()},
     success: function(data) {
-      if (data.indexOf('db_error') + 1) {
-        $('#shorturl').val('There is no connection to the DB');
-      }
-      else {
-        $('#shorturl').val(data);
-      }
+      $('#shorturl').val(data);
     }
   })
 }

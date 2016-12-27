@@ -1,32 +1,33 @@
 <?php
   require_once 'config.php';
   require_once 'functions.php';
+  $shortener=new Shortener;
   //check for valid URL
-  if (!verifyLongUrl($_REQUEST["longurl"])) {
+  if (!$shortener->verifyLongUrl($_REQUEST["longurl"])) {
     die("Your URL is not valid");
   }
   //check for DB connection
-  $connect=connectDB();
+  $connect=$shortener->connectDB();
   if ($connect->connect_errno) {
-    die("db_error");
+    die("There is no connection to the DB");
   }
   //check for injections
-  $longurl=implementFilters($_REQUEST["longurl"]);
+  $longurl=$shortener->implementFilters($_REQUEST["longurl"]);
   //check for desired URL
   if($_POST["desiredurl"]) {
     if(!preg_match(EXPRESSION, $_POST["desiredurl"])) {
-	     die('That is not a valid short URL');
+       die("That is not a valid short URL");
     }
-    $shorturl="http://".$_SERVER["HTTP_HOST"]."/".implementFilters($_REQUEST["desiredurl"]);
-    if (verifyShortURL($shorturl, $connect)->fetch_assoc()) {
-      die("Desired URL is already in DB");
+    $shorturl="http://".$_SERVER["HTTP_HOST"]."/".$shortener->implementFilters($_REQUEST["desiredurl"]);
+    if ($shortener->verifyShortURL($shorturl, $connect)->fetch_assoc()) {
+      die("Desired URL is already in the DB");
     }
   }
   else {
     //generate short URL and verify if it is already in the DB
     do {
-      $generatedurl=generateShortURL(CHARS);
-    } while (verifyShortURL($generatedurl, $connect)->fetch_assoc());
+      $generatedurl=$shortener->generateShortURL(CHARS);
+    } while ($shortener->verifyShortURL($generatedurl, $connect)->fetch_assoc());
     $shorturl="http://".$_SERVER["HTTP_HOST"]."/".$generatedurl;
   }
   //insert URL pair into the DB

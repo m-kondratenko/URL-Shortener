@@ -1,4 +1,7 @@
+php_value display_errors 0
+php_value log_errors On
+php_value error_log /php-errors.log
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule .* index.php [L]    
+RewriteRule .* index.php [L]
