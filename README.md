@@ -20,14 +20,18 @@ Extra Credit
 
 Notes
 
-This application uses the following technologies: 
+This application uses the following technologies:
 - HTML, CSS for main blocks and styling;
 - javaScript, Ajax for communicating with server without reloading of the page;
 - PHP for main server logic;
 - Silex framework for easier rooting.
 
+Required PHP 5.6. In php.ini you should set the following parameters:
+php_value phar.readonly 0
+php_value phar.require_hash 0
+
 When main page is first loaded, HTML will be given to user whereas verification of 15 days URLs expiring will be performed on server side.
-Then user inserts his/her URL and can insert desired URL. After pressing the button, inserted data is sent to the server via ajax request. The data is passing through a few steps: 
+Then user inserts his/her URL and can insert desired URL. After pressing the button, inserted data is sent to the server via ajax request. The data is passing through a few steps:
 - URL is checked if it is real by sending http request;
 - URL and desired URL are modified to prevent html/sql injections;
 - desired URL is checked if it is already presents in the DB;
@@ -37,9 +41,9 @@ Then user inserts his/her URL and can insert desired URL. After pressing the but
 
 When user uses short url, this url is also passed through similar steps. As a result, page is redirected to initial URL, which was stored in the DB. Usage counter is incremented.
 
-Table "urls" consists of these fields: id, longurl, shorturl, date, usage.
+Table "urls" consists of these fields: id, longurl, shorturl, date, count.
 
 In configuration.php you may change DB parameters, allowed chars for short URL generator, maximum length of short URL.
 To turn logging off you need to change this string "php_value log_errors On" in .htaccess to this one "php_value log_errors Off".
 
-To use API in your code you should try $shorturl=file_get_contents('http://DOMAIN/php/getshorturl.php?longurl='.urlencode('URL')); where "DOMAIN" is a domain of this URL shortener and "URL" is your URL to shorten. 
+To use API in your code you should try $shorturl=file_get_contents('http://DOMAIN/php/getshorturl.php?longurl='.urlencode('URL')); where "DOMAIN" is a domain of this URL shortener and "URL" is your URL to shorten.
