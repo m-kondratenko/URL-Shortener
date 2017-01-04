@@ -27,8 +27,7 @@ This application uses the following technologies:
 - Silex framework for easier rooting.
 
 Required PHP 5.6. In php.ini you should set the following parameters:
-php_value phar.readonly 0
-php_value phar.require_hash 0
+phar.readonly=0, phar.require_hash=0.
 
 When main page is first loaded, HTML will be given to user whereas verification of 15 days URLs expiring will be performed on server side.
 Then user inserts his/her URL and can insert desired URL. After pressing the button, inserted data is sent to the server via ajax request. The data is passing through a few steps:
