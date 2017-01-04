@@ -7,14 +7,9 @@
       return $mysqli;
     }
 
-    public function implementFilters($url) {
-      if(get_magic_quotes_gpc()==1)  {
-        $url=stripslashes(trim($url));
-        }
-      else {
-        $url=trim($url);
-        }
-      $url=mysql_real_escape_string($url);
+    public function implementFilters($senturl, $connect) {
+      $url=trim($senturl);
+      $url=mysqli_real_escape_string($connect, $url);
       return $url;
     }
 
@@ -39,7 +34,7 @@
     }
 
     public function incrementUsage($id, $connect) {
-      $result=$connect->query("UPDATE `urls` SET `usage`=`usage`+1 WHERE `id`='$id'");
+      $result=$connect->query("UPDATE `urls` SET `count`=`count`+1 WHERE `id`='$id'");
     }
 
     public function generateShortURL($base){

@@ -19,11 +19,12 @@
     $connect->close();
     return false;
     //API
-    //return file_get_contents('http://DOMAIN/php/getshorturl.php?longurl='.urlencode('URL'));
+    //return file_get_contents('http://ec2-52-31-201-122.eu-west-1.compute.amazonaws.com/php/getshorturl.php?longurl='.urlencode('http://forum.ru-board.com/topic.cgi?forum=28&topic=1832'));
   });
   $app->get('/{url}', function($url) {
     require_once 'config.php';
     require_once 'functions.php';
+    $shorturl='';
     $shortener=new Shortener;
     $connect=$shortener->connectDB();
     //check for DB connection
@@ -34,7 +35,8 @@
     if(!preg_match(EXPRESSION, $url)) {
       die ("That is not a valid short URL");
     }
-    $shorturl="http://".$_SERVER["HTTP_HOST"]."/".$shortener->implementFilters($url);
+    //$shorturl="http://".$_SERVER["HTTP_HOST"]."/".$shortener->implementFilters($url, $connect);
+    $shorturl=$shortener->implementFilters($url, $connect);
     //check if there is such URL in the DB
     $id=mysqli_fetch_row($shortener->verifyShortURL($shorturl, $connect));
     if (!$id) {

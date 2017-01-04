@@ -1,6 +1,8 @@
 php_value display_errors 0
 php_value log_errors On
 php_value error_log /php-errors.log
+php_value phar.readonly 0
+php_value phar.require_hash 0
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

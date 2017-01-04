@@ -21,7 +21,7 @@
       <p></p>
       <div class="text">Short URL</div>
       <input id="shorturl" class="input" type="text" disabled><br>
-      <button id="shorten" class="button" type="button" onclick="GetShortURL()">Get shortened URL</button><br>
+      <button id="shorten" class="button" type="button" onclick="GetShortURL()" >Get shortened URL</button><br>
       <div class="smalltext">* First you should insert your URL and then push the button to get the URL shortened. You may also insert preffered short URL.</div>
       <div class="smalltext">Allowed chars: <?php echo CHARS ?>. Allowed length: <?php echo MAX_LENGTH ?>.</div>
     </form>
